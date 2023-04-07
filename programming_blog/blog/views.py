@@ -11,7 +11,7 @@ menu = [
 class BlogHome(ListView):
     model = Blog
     template_name = 'blog/index.html' # куда будет выводиться HTML страница. template_name - как свойства в классе, они имеют определенное значение, что мы в них должны поместить.
-    context_object_name = 'post' # Имя объекта внутри шаблона. Специальная переменная которая будет выводить код в html шаблон.
+    context_object_name = 'posts' # Имя объекта внутри шаблона. Специальная переменная которая будет выводить код в html шаблон.
 
     def get_context_data(self, *, object_list=None, **kwargs): # данный метод сущ-ет для любого класса который наследуется от ListView.
         context = super().get_context_data(**kwargs) # контекст есть у родительского класса, получаем context для шаблона со всеми ключами и значениями.
