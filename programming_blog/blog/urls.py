@@ -4,5 +4,6 @@ from .views import * # так как работа ведется с класса
 urlpatterns = [
     path('', BlogHome.as_view(), name='index'), # as_views - привязать к маршруту. Т.е привязать текущий класс к текущему маршруту '' данного пути.
     path('post/<slug:post_slug>/', ShowPost.as_view(), name='post'), # ставим slug для ceo оптимизации и вывода нашего slug. Тип данных slug и принимать post_slug. post_slug - поддерживает латиницу, ASCII символы, символы - и _ в post_slug - буквы и цифры могут располагаться, - и _ в принимаемый тип данных slug мы разрешаем чтобы попадал.
+    path('category/<slug:cat_slug>/', BlogCategory.as_view(), name='category'),
 
 ]
