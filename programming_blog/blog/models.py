@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 class Blog(models.Model):
     title = models.CharField(max_length=255, verbose_name='Название') # обязательное для заполнения. verbose_name - относится к админке и отношения к БД не имеет.
@@ -13,6 +14,10 @@ class Blog(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        """Конкретный путь для статьи"""
+        return reverse('post', kwargs={'post_slug': self.slug}) # post_slug - то что принимается в адресной строке, соединяем со slug из модели.
 
     class Meta: # Это доп-1 функционал кот-й мы можем дополнять к классу.
         verbose_name = 'Новость' # verbose_name перевели элементы, которые перечисляются в единственном числе. В единственном числе.
