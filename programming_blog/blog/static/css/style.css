@@ -1,0 +1,46 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: #264b5d;
+    font-family: Verdana, Geneva, Tahoma, sans-serif; /* шрифт без засечек */
+}
+.wrap {
+    max-width: 1200px; /* максимальныя ширина, что бы не растягивался по всей ширине */
+    margin: 0 auto;
+}
+.content .wrap {
+    background: #FFF;
+    padding: 40px;
+    box-sizing: border-box; /* что бы не расширялась ширина сайта */
+}
+ul {
+    list-style: none; /* уберем маркеры списка */
+    margin: 0;
+    padding: 0;
+}
+a {
+    color: #81d4fa; 
+    text-decoration: none; /* уберем подчеркивание */
+    padding: 20px;
+}
+a:hover {
+    color: #ffC; /* при наведении мышки пускай цветт меняется */
+}
+.header {
+    background: #121212;
+}
+.mainmenu {
+    display: flex;
+    align-items: center;
+    font-size: 20px; 
+    font-weight: bold;
+    padding: 20px;
+}
+.logo {
+    flex-basis: 40%; /* логотип 40% от размера */ 
+}
+.last {
+    flex-basis: 30%;
+    text-align: right;
+}
+

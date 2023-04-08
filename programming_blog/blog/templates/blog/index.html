@@ -8,7 +8,7 @@
     {% for p in posts %}
         <li>
             <h2>{{ p.title }}</h2>
-            <p>{{ p.content }}</p>
+            <p>{{ p.content|linebreaks|truncatewords:50 }}</p> <!-- |linebreaks - что бы появились абзацы и кол-во слов  -->
         </li>
     {% endfor %}
 </ul>
