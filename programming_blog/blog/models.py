@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 
 class Blog(models.Model):
+    """Статья"""
     title = models.CharField(max_length=255, verbose_name='Название') # обязательное для заполнения. verbose_name - относится к админке и отношения к БД не имеет.
     slug = models.SlugField(max_length=255, unique=True, verbose_name='URL') # название транслитерации какой-то статьи, что-бы в адресной строке появлялось в место id если будем заходить на конкретную новость, либо запись, что бы в адресной строке прописывалось полностью название новости. Не может быть с одним и тем же названием.
     content = models.TextField(blank=True, verbose_name='Контент') # контент статьи
@@ -13,6 +14,7 @@ class Blog(models.Model):
     cat = models.ForeignKey('Category', on_delete=models.PROTECT, verbose_name='Категория') # категория. Так как класс ниже, имя класса указываем в кавычках. Запрещается удалять записи из первичной модели, если она используется во вторичной, выдает исключение.
 
     def __str__(self):
+        """Заголовок"""
         return self.title
 
     def get_absolute_url(self):
@@ -20,12 +22,14 @@ class Blog(models.Model):
         return reverse('post', kwargs={'post_slug': self.slug}) # post_slug - то что принимается в адресной строке, соединяем со slug из модели.
 
     class Meta: # Это доп-1 функционал кот-й мы можем дополнять к классу.
+        """Настройки админки и сортировка модели"""
         verbose_name = 'Новость' # verbose_name перевели элементы, которые перечисляются в единственном числе. В единственном числе.
         verbose_name_plural = 'Новости' # Во множественном числе.
         ordering = ['-time_created'] # сортировка по времени
 
 
 class Category(models.Model):
+    """Категория статьи"""
     name = models.CharField(max_length=100, verbose_name='Категория') # название категории
     slug = models.SlugField(max_length=200, unique=True, verbose_name='URL')
 
@@ -33,5 +37,6 @@ class Category(models.Model):
         return self.name
 
     class Meta: # Это доп-й функционал кот-й мы можем дополнять к классу.
+        """Настройки админки"""
         verbose_name = 'Категория' # verbose_name перевели элементы, которые перечисляются в единственном числе. В единственном числе.
         verbose_name_plural = 'Категории' # Во множественном числе.
