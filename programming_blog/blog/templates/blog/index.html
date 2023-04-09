@@ -6,12 +6,21 @@
 <!-- Вывод статей -->
 <ul>
     {% for p in posts %}
-        <li>
+    <li>
+        <p class="first">Категория: {{ p.cat }}</p>
+        <!-- Описание -->
+        <div class="text">
+            <!-- Вывод фото если оно есть -->
+            {% if p.photo %}
+            <img class="image" src="{{ p.photo.url }}" alt="">
+            {% endif %}
             <h2>
                 <a href="{{ p.get_absolute_url }}">{{ p.title }}</a> <!-- Что бы сделать удобный переход, будем вызывать функцию с определенным именем. -->
             </h2>
             <p>{{ p.content|linebreaks|truncatewords:50 }}</p> <!-- |linebreaks - что бы появились абзацы и кол-во слов  -->
-        </li>
+        </div>
+        <p class="date">Дата: {{ p.time_update|date:'d-m-Y H:i:s' }}</p>
+    </li>
     {% endfor %}
 </ul>
 
