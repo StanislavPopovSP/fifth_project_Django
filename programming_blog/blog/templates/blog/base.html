@@ -1,4 +1,5 @@
 {% load static %}
+{% load blog_tags %} <!-- Загружаем наше имя документа -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,8 +20,22 @@
     </div>
     <div class="content">
         <div class="wrap">
-            {% block content %}
-            {% endblock %}
+            <div class="sidebar">
+                <ul>
+                    <!-- Будем выводить все категории -->
+                    {% if cat_selected == 0 %}
+                    <li class="selected">Все категории</li>
+                    {% else %}
+                    <li><a href="{% url 'index' %}">Все категории</a></li>
+                    <!-- Подключаем функцию -->
+                    {% endif %}
+                    {% show_categories cat_selected=cat_selected %} <!-- cat_selected=cat_selected - выделенный какой-то элемент -->
+                </ul>
+            </div>
+            <div class="main">
+                {% block content %}
+                {% endblock %}
+            </div>
         </div>
     </div>
 </body>
