@@ -1,6 +1,16 @@
 {% extends 'blog/base.html' %}
 {% block content %}
 
-{{ post.title }}
+<!-- Описание какой-то конкретной записи -->
+<div class="post">
+<h2>{{ post.title }}</h2>
+    <!-- Если фото есть то выводить -->
+    {% if post.photo %}
+    <img src="{{ post.photo.url }}" alt="">
+    {% endif %}
+
+    {{ post.content|linebreaks }}
+
+</div>
 
 {% endblock %}
