@@ -131,3 +131,22 @@ a:hover {
 .post {
     font-size: 16px;
 }
+
+.form-input {
+    width: 100%; /* ширина 100% */
+    padding: 10px;
+    box-sizing: border-box; /* для того что бы текст не прилипал к границам */
+}
+
+.button {
+    background: #81d4fa;
+    border: 2px solid #264b5d;
+    width: 100%;
+    padding: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+form label {
+    font-size: 18px;
+}
