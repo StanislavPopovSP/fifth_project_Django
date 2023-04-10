@@ -1,8 +1,9 @@
 {% extends 'blog/base.html' %}
 {% block content %}
 
+<!-- Форма добавления статьи -->
 <h1>{{ title }}</h1>
-<form action="{% url ''add_page %}" method="post" enctype="multipart/form-data"> <!-- так как нужно будет файл загружать в виде изображения -->
+<form action="{% url 'add_page' %}" method="post" enctype="multipart/form-data"> <!-- так как нужно будет файл загружать в виде изображения -->
     {% csrf_token %}
     {{ form.as_p }}
     <button>Добавить</button>
