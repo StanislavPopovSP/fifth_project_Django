@@ -1,8 +1,14 @@
 from django import forms
 from .models import *
+from django.core.exceptions import ValidationError
+
 
 class AddPostForm(forms.ModelForm):
     """Создание статьи"""
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['cat'].empty_label = 'Категория не выбрана' # теперь будет писать категория не выбрана. Это обязательное поле, делаем что это поле обязательное для заполнения.
+
     class Meta:
         model = Blog
         fields = ['title', 'slug', 'content', 'photo', 'is_published', 'cat']
