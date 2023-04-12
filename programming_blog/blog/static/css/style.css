@@ -138,7 +138,7 @@ a:hover {
     box-sizing: border-box; /* для того что бы текст не прилипал к границам */
 }
 
-.button {
+button {
     background: #81d4fa;
     border: 2px solid #264b5d;
     width: 100%;
