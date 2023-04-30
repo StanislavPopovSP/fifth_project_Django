@@ -1,4 +1,5 @@
 {% extends 'blog/base.html' %}
+{% load static %}
 {% block content %}
 
 <h1>{{ title }}</h1>
@@ -13,6 +14,8 @@
             <!-- Вывод фото если оно есть -->
             {% if p.photo %}
             <img class="image" src="{{ p.photo.url }}" alt="">
+            {% else %} <!-- Добавим фото по умолчанию -->
+            <img class="image" src="{% static 'blog/default.jpg' %}" alt="">
             {% endif %}
             <h2>
                 <a href="{{ p.get_absolute_url }}">{{ p.title }}</a> <!-- Что бы сделать удобный переход, будем вызывать функцию с определенным именем. -->
