@@ -1,8 +1,8 @@
-from django.shortcuts import render
 from django.views.generic import ListView  # он за нас сделает большую работу, не надо будет указывать много элементов одновременно.
 from django.views.generic import DetailView  # детальное описание какого то View
 from django.views.generic import CreateView  # создать представление(обработчик)
 from django.urls import reverse_lazy  # это как redirect в функциях перенаправление, что бы когда заполнили элементы формы, могли перейти на какую-то определенную страницу.
+from django.contrib.auth.mixins import LoginRequiredMixin # Готовый Mixin Django для ограничения доступа к страницам, например для не авторизированных пользователей. Работа авторизацией.
 from .utils import *
 from .forms import *
 
@@ -13,6 +13,7 @@ class BlogHome(DataMixin, ListView):
     model = Blog
     template_name = 'blog/index.html'  # куда будет выводиться HTML страница. template_name - как свойства в классе, они имеют определенное значение, что мы в них должны поместить. В Django есть стандартные названия шаблонов.
     context_object_name = 'posts'  # Имя объекта внутри шаблона. Специальная переменная которая будет выводить код в html шаблон. Берет данные из модели.
+    paginate_by = 3
 
     def get_context_data(self, *, object_list=None, **kwargs):  # данный метод сущ-ет для любого класса который наследуется от ListView.
         """Получаем данные для шаблона """
@@ -56,8 +57,10 @@ class BlogCategory(DataMixin, ListView):
 
     # есть статьи хот-е опубликованы либо нет, надо выводить только опубликованные статьи.
     def get_queryset(self) -> list:  # Верните список элементов для этого представления. Возвращаемое значение должно быть итеративным и может быть экземпляром QuerySet
-        """Делаем ограничения, возвращаем нужные данные, связываем публикацию с категорией"""
+        """Делаем ограничения, возвращаем нужные данные, связываем публикацию с категорией, переопределяем доступ к БД."""
         return Blog.objects.filter(cat__slug=self.kwargs['cat_slug'], is_published=True).select_related('cat')  # в виде ключа передадим self.kwargs['cat_slug']
+        # or
+        # return Blog.objects.filter(cat__slug=self.kwargs.get('cat_slug'), is_published=True).select_related('cat')
 
     def get_context_data(self, *, object_list=None, **kwargs):  # данный метод сущ-ет для любого класса который наследуется от ListView.
         """Данные для вывода"""
@@ -66,16 +69,20 @@ class BlogCategory(DataMixin, ListView):
         # context['cat_selected'] = context['posts'][0].cat_id  # так как slug идёт уникальным, ему проще найти по id элемент.
         # context['menu'] = menu  # Что бы их можно было увидеть # Когда обратимся к ключу 'menu' получим доступ к menu.
         # return context
-        c = Category.objects.get(slug=self.kwargs['cat_slug']) # В виде ключа будем брать cat_slug (Аргумент, поле таблицы slug берем его cat_slug)
-        c_def = self.get_user_context(title='Категория - ' + str(c.name), cat_celected=c.pk)
+        c = Category.objects.get(slug=self.kwargs['cat_slug']) # В виде ключа будем брать cat_slug какой-то категории (Аргумент, поле таблицы slug берем его cat_slug)
+        c_def = self.get_user_context(title='Категория - ' + str(c.name))
         return dict(list(context.items()) + list(c_def.items()))
 
-
-class AddPage(DataMixin, CreateView):
+# Мы хотим что бы на страницу добавить статью, заходили только авторизированные пользователи.
+class AddPage(LoginRequiredMixin, DataMixin, CreateView):
     """Обработка формы добавления статьи"""
     form_class = AddPostForm  # это готовое имя, его не придумываем. Что бы мы могли сделать свою форму.
     template_name = 'blog/addpage.html'  # какой шаблон будет заниматься обработкой текущей страницей.
     success_url = reverse_lazy('index')  # если зашли на эту страницу и отправили данные формы, они у нас отправились удачно, добавляется success_url. Через reverse_lazy перенаправит на какую-то страницу.
+    # 1 Вариант, ошибка
+    # raise_exception = True # если пользователь не авторизирован Буде генерироваться ошибка 403 Forbidden
+    # 2 второй перенаправление на какую то страницу.
+    login_url = reverse_lazy('index') # Когда незарегистрированный пользователь попытается зайти на добавить статью, то его перенаправит на главную страницу
 
     def get_context_data(self, *, object_list=None, **kwargs):  # данный метод сущ-ет для любого класса который наследуется от ListView.
         """Получаем данные для шаблона"""
