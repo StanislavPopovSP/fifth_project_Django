@@ -1,5 +1,6 @@
 # Какой-то дополнительный функционал
 from .models import *
+from django.db.models import Count  # Считает кол-во элементов
 
 # Пункты меню
 menu = [
@@ -12,12 +13,13 @@ class DataMixin:
     """Убираем дублирование кода"""
 
     def get_user_context(self, **kwargs):  # создадим контекст для шаблона
-        context = kwargs # kwargs - в него будут приходить принимаемые аргументы
-        cats = Category.objects.all()  # все категории
+        context = kwargs  # kwargs - в него будут приходить принимаемые аргументы
+        cats = Category.objects.annotate(Count('blog'))  # Пускай считает кол-во элементов в блоге, annotate - связывает блог с категорией и считаем кол-во элементов в блоке.
+        user_menu = menu.copy()  # получаем копию словаря
+        if not self.request.user.is_authenticated:  # если пользователь не аутентифицирован, удаляем 'title': 'Добавить статью'
+            user_menu.pop(0)
 
-        context['menu'] = menu  # в конетексте у каждого пункта используется меню
+        context['menu'] = user_menu  # в конетексте у каждого пункта используется меню
         context['cats'] = cats  # к каждой статье принимается категория
 
-        if 'cat_selected' not in context:  # если выделенная категория не находится в context
-            context['cat_selected'] = 0  # категория не активная
         return context
