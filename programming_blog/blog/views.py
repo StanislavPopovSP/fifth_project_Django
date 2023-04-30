@@ -17,10 +17,13 @@ class BlogHome(DataMixin, ListView):
     def get_context_data(self, *, object_list=None, **kwargs):  # данный метод сущ-ет для любого класса который наследуется от ListView.
         """Получаем данные для шаблона """
         context = super().get_context_data(**kwargs)  # get_context_data есть у родительского класса, получаем доступ к такому же get_context_data со всеми ключами и значениями.
-        context['title'] = 'Главная страница'  # на главную страницу добавляем заголовок
-        context['cat_selected'] = 0  # придумали название cat_selected и его значение 0
-        context['menu'] = menu  # Что бы их можно было увидеть # Когда обратимся к ключу 'menu' получим доступ к menu.
-        return context
+        # context['title'] = 'Главная страница'  # на главную страницу добавляем заголовок
+        # context['cat_selected'] = 0  # придумали название cat_selected и его значение 0
+        # context['menu'] = menu  # Что бы их можно было увидеть # Когда обратимся к ключу 'menu' получим доступ к menu.
+        # return context
+        c_def = self.get_user_context(title='Главная страница')
+        return dict(list(context.items()) + list(c_def.items()))
+
 
     def get_queryset(self) -> list:  # Верните список элементов для этого представления. Возвращаемое значение должно быть итеративным и может быть экземпляром QuerySet
         """Делаем ограничения, возвращаем нужные данные, связываем публикацию с категорией"""
@@ -37,9 +40,11 @@ class ShowPost(DataMixin, DetailView):
     def get_context_data(self, *, object_list=None, **kwargs):  # данный метод сущ-ет для любого класса который наследуется от ListView.
         """Получаем данные для шаблона"""
         context = super().get_context_data(**kwargs)
-        context['title'] = context['post']  # В каждой статье будет название свое конкретное. context[] - в контекст передадим post, что бы попадало имя конкретной статьи в title.
-        context['menu'] = menu  # Что бы их можно было увидеть # Когда обратимся к ключу 'menu' получим доступ к menu.
-        return context
+        # context['title'] = context['post']  # В каждой статье будет название свое конкретное. context[] - в контекст передадим post, что бы попадало имя конкретной статьи в title.
+        # context['menu'] = menu  # Что бы их можно было увидеть # Когда обратимся к ключу 'menu' получим доступ к menu.
+        # return context
+        c_def = self.get_user_context(title=context['post'])
+        return dict(list(context.items()) + list(c_def.items()))
 
 
 class BlogCategory(DataMixin, ListView):
@@ -57,10 +62,13 @@ class BlogCategory(DataMixin, ListView):
     def get_context_data(self, *, object_list=None, **kwargs):  # данный метод сущ-ет для любого класса который наследуется от ListView.
         """Данные для вывода"""
         context = super().get_context_data(**kwargs)  # контекст есть у родительского класса, получаем context для шаблона со всеми ключами и значениями.
-        context['title'] = 'Категория - ' + str(context['posts'][0].cat)  # на главную страницу добавляем заголовок
-        context['cat_selected'] = context['posts'][0].cat_id  # так как slug идёт уникальным, ему проще найти по id элемент.
-        context['menu'] = menu  # Что бы их можно было увидеть # Когда обратимся к ключу 'menu' получим доступ к menu.
-        return context
+        # context['title'] = 'Категория - ' + str(context['posts'][0].cat)  # на главную страницу добавляем заголовок
+        # context['cat_selected'] = context['posts'][0].cat_id  # так как slug идёт уникальным, ему проще найти по id элемент.
+        # context['menu'] = menu  # Что бы их можно было увидеть # Когда обратимся к ключу 'menu' получим доступ к menu.
+        # return context
+        c = Category.objects.get(slug=self.kwargs['cat_slug']) # В виде ключа будем брать cat_slug (Аргумент, поле таблицы slug берем его cat_slug)
+        c_def = self.get_user_context(title='Категория - ' + str(c.name), cat_celected=c.pk)
+        return dict(list(context.items()) + list(c_def.items()))
 
 
 class AddPage(DataMixin, CreateView):
