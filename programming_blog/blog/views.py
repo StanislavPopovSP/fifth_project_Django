@@ -13,7 +13,6 @@ class BlogHome(DataMixin, ListView):
     model = Blog
     template_name = 'blog/index.html'  # куда будет выводиться HTML страница. template_name - как свойства в классе, они имеют определенное значение, что мы в них должны поместить. В Django есть стандартные названия шаблонов.
     context_object_name = 'posts'  # Имя объекта внутри шаблона. Специальная переменная которая будет выводить код в html шаблон. Берет данные из модели.
-    paginate_by = 3
 
     def get_context_data(self, *, object_list=None, **kwargs):  # данный метод сущ-ет для любого класса который наследуется от ListView.
         """Получаем данные для шаблона """

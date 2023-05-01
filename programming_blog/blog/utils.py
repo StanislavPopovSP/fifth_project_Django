@@ -11,6 +11,7 @@ menu = [
 
 class DataMixin:
     """Убираем дублирование кода"""
+    paginate_by = 3
 
     def get_user_context(self, **kwargs):  # создадим контекст для шаблона
         context = kwargs  # kwargs - в него будут приходить принимаемые аргументы

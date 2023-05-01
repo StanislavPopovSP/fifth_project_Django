@@ -26,7 +26,7 @@
                 <li class="selected">Все категории</li>
                 {% for c in cats %} <!-- cats - из класса Mixin -->
                 {% if c.blog__count > 0 %} <!-- если кол-во постов в категории 0,то данная категория не выводится. -->
-                    <li><a href="{{ c.get_absolute_url }}">{{ c.name }}</a></li>
+                <li><a href="{{ c.get_absolute_url }}">{{ c.name }}</a></li>
                 {% endif %}
                 {%endfor %}
             </ul>
@@ -36,17 +36,20 @@
             {% block content %}
             {% endblock %}
             <div>
+                <!-- Пагинация на главной странице -->
+                {% if page_obj.has_other_pages %} <!-- has_other_pages - если страница с объектами имеет другие страницы -->
                 <ul class="list-pages">
                     {% for p in paginator.page_range %}
                     {% if page_obj.number == p %} <!-- Если текущий номер равен  -->
                     <li class="page-num page-num-selected">{{ p }}</li>
-                    {% else %}
+                    {% elif p >= page_obj.number|add:-3 and p <= page_obj.number|add:3 %} <!-- Для отображения номеров с права и лево -->
                     <li class="page-num">
-                        <a href="">{{ p }}</a>
+                        <a href="?page={{ p }}">{{ p }}</a> <!-- При нажатии, что бы было ?page - после нашего адреса будем добавлять GET параметры, будет приходить какой-то определенный p  -->
                     </li>
                     {% endif %}
                     {% endfor %}
                 </ul>
+                {% endif %}
             </div>
         </div>
     </div>
