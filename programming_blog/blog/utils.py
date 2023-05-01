@@ -23,4 +23,7 @@ class DataMixin:
         context['menu'] = user_menu  # в конетексте у каждого пункта используется меню
         context['cats'] = cats  # к каждой статье принимается категория
 
+        if 'cat_selected' not in context:
+            context['cat_selected'] = 0
+
         return context

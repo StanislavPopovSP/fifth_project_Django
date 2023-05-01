@@ -69,7 +69,7 @@ class BlogCategory(DataMixin, ListView):
         # context['menu'] = menu  # Что бы их можно было увидеть # Когда обратимся к ключу 'menu' получим доступ к menu.
         # return context
         c = Category.objects.get(slug=self.kwargs['cat_slug']) # В виде ключа будем брать cat_slug какой-то категории (Аргумент, поле таблицы slug берем его cat_slug)
-        c_def = self.get_user_context(title='Категория - ' + str(c.name))
+        c_def = self.get_user_context(title='Категория - ' + str(c.name), cat_selected=c.pk)
         return dict(list(context.items()) + list(c_def.items()))
 
 # Мы хотим что бы на страницу добавить статью, заходили только авторизированные пользователи.

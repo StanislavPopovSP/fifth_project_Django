@@ -19,7 +19,7 @@ class Blog(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        """Конкретный путь для статьи"""
+        """Путь для статьи"""
         return reverse('post', kwargs={'post_slug': self.slug})  # post_slug - то что принимается в адресной строке, соединяем со slug из модели.
 
     class Meta:  # Это доп-1 функционал кот-й мы можем дополнять к классу.
@@ -36,6 +36,10 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        """Путь для категории"""
+        return reverse('category', kwargs={'cat_slug': self.slug})
 
     class Meta:  # Это доп-й функционал кот-й мы можем дополнять к классу.
         """Настройки админки"""
