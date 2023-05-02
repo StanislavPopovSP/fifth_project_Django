@@ -49,6 +49,7 @@ a:hover {
     font-size: 20px;
     font-weight: bold;
     padding: 20px;
+    justify-content: space-between;
 }
 
 .logo {
@@ -59,6 +60,7 @@ a:hover {
 .last {
     flex-basis: 30%;
     text-align: right;
+    color: #81d4fa;
 }
 
 .sidebar ul {
