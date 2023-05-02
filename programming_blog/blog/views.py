@@ -3,11 +3,13 @@ from django.views.generic import DetailView  # детальное описани
 from django.views.generic import CreateView  # создать представление(обработчик)
 from django.urls import reverse_lazy  # это как redirect в функциях перенаправление, что бы когда заполнили элементы формы, могли перейти на какую-то определенную страницу.
 from django.contrib.auth.mixins import LoginRequiredMixin # Готовый Mixin Django для ограничения доступа к страницам, например для не авторизированных пользователей. Работа авторизацией.
+from django.contrib.auth.views import LoginView # Что бы залогиниться
+from django.contrib.auth.forms import AuthenticationForm # Для аутентификации, готовая форма
 from .utils import *
 from .forms import *
 
 
-# если работаем с классом, то без модели он работать не может
+# Если работаем с классом, то без модели он работать не может.
 class BlogHome(DataMixin, ListView):
     """Обработка главной страницы"""
     model = Blog
@@ -89,4 +91,26 @@ class AddPage(LoginRequiredMixin, DataMixin, CreateView):
         # context['title'] = 'Добавление статьи'  # в заголовке окна браузера будет выводится.
         # context['menu'] = menu  # Что бы их можно было увидеть # Когда обратимся к ключу 'menu' получим доступ к menu.
         c_def = self.get_user_context(title='Добавление статьи')
+        return dict(list(context.items()) + list(c_def.items()))
+
+class RegisterUser(DataMixin, CreateView):
+    """Регистрация пользователя, обработка формы"""
+    form_class = RegisterUserForm
+    template_name = 'blog/register.html'
+    success_url = reverse_lazy('login')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title='Регистрация')
+        return dict(list(context.items()) + list(c_def.items()))
+
+
+class LoginUser(DataMixin, LoginView):
+    """Авторизирует пользователя"""
+    form_class = AuthenticationForm
+    template_name = 'blog/login.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title='Авторизация')
         return dict(list(context.items()) + list(c_def.items()))
