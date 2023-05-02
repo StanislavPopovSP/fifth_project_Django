@@ -3,7 +3,8 @@
 
 <h1>{{ title }}</h1>
 
-<form action="" method="post">
+<!-- Регистрация -->
+<form action="{% url 'register' %}" method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <button>Регистрация</button>
