@@ -5,6 +5,8 @@ from django.urls import reverse_lazy  # это как redirect в функция
 from django.contrib.auth.mixins import LoginRequiredMixin # Готовый Mixin Django для ограничения доступа к страницам, например для не авторизированных пользователей. Работа авторизацией.
 from django.contrib.auth.views import LoginView # Что бы залогиниться
 from django.contrib.auth.forms import AuthenticationForm # Для аутентификации, готовая форма
+from django.shortcuts import redirect # для перенаправления
+from django.contrib.auth import login # что бы авторизоваться автоматически
 from .utils import *
 from .forms import *
 
@@ -97,12 +99,18 @@ class RegisterUser(DataMixin, CreateView):
     """Регистрация пользователя, обработка формы"""
     form_class = RegisterUserForm
     template_name = 'blog/register.html'
-    success_url = reverse_lazy('login')
+    # success_url = reverse_lazy('login') # данный переход нужен если не делать form_valid
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title='Регистрация')
         return dict(list(context.items()) + list(c_def.items()))
+
+    def form_valid(self, form):
+        """Переопределяем данный метод"""
+        user = form.save() # сохраняем форму и получаем пользователя
+        login(self.request, user) # после регистрации автоматически залогинились и перешли на страницу index
+        return redirect('index') # Что бы когда зарегистрировались, мы автоматически перешли через страницу авторизаии, что бы на нее не попали.
 
 
 class LoginUser(DataMixin, LoginView):
