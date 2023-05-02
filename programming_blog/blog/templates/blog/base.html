@@ -50,15 +50,30 @@
                 <!-- Пагинация на главной странице -->
                 {% if page_obj.has_other_pages %} <!-- has_other_pages - если страница с объектами имеет другие страницы -->
                 <ul class="list-pages">
+                    <!-- Стрелка в лево, если есть страницы -->
+                    {% if page_obj.has_previous %}
+                    <li class="page-num">
+                        <a href="?page={{ page_obj.previous_page_number }}">&lt;</a> <!-- &gt; - символьная подстановка & - амперсанд "?page={{ page_obj.next_page_number }} - что бы был переход на следующую страницу -->
+                    </li>
+                    {% endif %}
+
+                    <!-- Пробегаемся по страницам пагинации -->
                     {% for p in paginator.page_range %}
                     {% if page_obj.number == p %} <!-- Если текущий номер равен  -->
                     <li class="page-num page-num-selected">{{ p }}</li>
                     {% elif p >= page_obj.number|add:-3 and p <= page_obj.number|add:3 %} <!-- Для отображения номеров с права и лево -->
                     <li class="page-num">
-                        <a href="?page={{ p }}">{{ p }}</a> <!-- При нажатии, что бы было ?page - после нашего адреса будем добавлять GET параметры, будет приходить какой-то определенный p  -->
+                        <a href="?page={{ p }}">{{ p }}</a> <!-- При нажатии, что бы было ?page - в адресной строке будет отображаться в виде GET параметров, будет приходить какой-то определенный p  -->
                     </li>
                     {% endif %}
                     {% endfor %}
+
+                    <!-- Стрелка в право, если есть страницы -->
+                    {% if page_obj.has_next %}
+                    <li class="page-num">
+                        <a href="?page={{ page_obj.next_page_number }}">&gt;</a> <!-- &gt; - символьная подстановка & - амперсанд "?page={{ page_obj.next_page_number }} - что бы был переход на следующую страницу -->
+                    </li>
+                    {% endif %}
                 </ul>
                 {% endif %}
             </div>
