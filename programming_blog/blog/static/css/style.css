@@ -173,3 +173,28 @@ form label {
     margin: 1px;
     font-weight: bold;
 }
+
+input, textarea {
+    width: 100%;
+    margin-top: 6px;
+    padding: 6px;
+    box-sizing: border-box;
+}
+
+label {
+    font-size: 20px;
+}
+
+#id_is_published {
+    width: 17px;
+    height: 17px;
+}
+
+#id_cat {
+    font-size: 17px;
+    padding: 4px;
+}
+
+.last a {
+    display: inline;
+}
