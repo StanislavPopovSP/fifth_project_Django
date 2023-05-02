@@ -1,4 +1,5 @@
 from django.urls import path
+from django.contrib.auth import views as auth_views
 from .views import *  # так как работа ведется с классами, то импортируем всё что есть в документе.
 
 urlpatterns = [
@@ -9,4 +10,5 @@ urlpatterns = [
 
     path('register/', RegisterUser.as_view(), name='register'),  # Путь для регистрации
     path('login/', LoginUser.as_view(), name='login'),  # Путь, что бы залогиниться
+    path('logout/', auth_views.LogoutView.as_view(template_name='blog/logout.html'), name='logout'),  # auth_views.LogoutView - даст возможность разлогиниться
 ]
