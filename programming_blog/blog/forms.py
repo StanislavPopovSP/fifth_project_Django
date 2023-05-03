@@ -43,3 +43,9 @@ class RegisterUserForm(UserCreationForm):
         """Для отображения правильного порядка который нам нужен"""
         model = User # В данную модель будем данные сохранять
         fields = ['username', 'email', 'password1', 'password2']
+
+class ContactForm(forms.Form): # Наследуемся от стандартной формы Джанго, для создания своей формы.
+    """Своя форма обратной связи"""
+    name = forms.CharField(label='Имя', max_length=255)
+    email = forms.EmailField(label='Email')
+    content = forms.CharField(label='Сообщения', widget=forms.Textarea(attrs={'cols': 60, 'rows': 10}))
