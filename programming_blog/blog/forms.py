@@ -3,6 +3,7 @@ from .models import *
 from django.core.exceptions import ValidationError  # проверка на валидацию своих каких то элементов.
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from captcha.fields import CaptchaField
 
 
 class AddPostForm(forms.ModelForm):
@@ -33,7 +34,8 @@ class AddPostForm(forms.ModelForm):
 
 class RegisterUserForm(UserCreationForm):
     """Берем все свойства и методы UserCreationForm,
-     переопределим свойства родительские и добавим свои поля."""
+     переопределяем свойства родительские и добавим свои поля.
+     Форма для регистрации пользователя."""
     username = forms.CharField(label='Логин', widget=forms.TextInput(attrs={'class': 'form-input'}))
     email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-input'})) # EmailField - будет добавлять проверку на валидацию поля
     password1 = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form-input'}))
@@ -49,3 +51,4 @@ class ContactForm(forms.Form): # Наследуемся от стандартн�
     name = forms.CharField(label='Имя', max_length=255)
     email = forms.EmailField(label='Email')
     content = forms.CharField(label='Сообщения', widget=forms.Textarea(attrs={'cols': 60, 'rows': 10}))
+    captcha = CaptchaField()
