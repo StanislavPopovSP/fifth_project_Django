@@ -20,7 +20,9 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('captcha/', include('captcha.urls')),
     path('', include('blog.urls')), # папка блог и urls.py
+
 ]
 
 if settings.DEBUG: # это отрабатывает на локальном хостинге, а когда будет находиться в интернете не будет работать.
