@@ -11,4 +11,5 @@ urlpatterns = [
     path('register/', RegisterUser.as_view(), name='register'),  # Путь для регистрации
     path('login/', LoginUser.as_view(), name='login'),  # Путь, что бы залогиниться
     path('logout/', auth_views.LogoutView.as_view(template_name='blog/logout.html'), name='logout'),  # auth_views.LogoutView - даст возможность разлогиниться
+    path('contact/', ContactFormView.as_view(), name='contact'),  # для доступа к странице и форме контакт
 ]
