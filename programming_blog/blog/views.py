@@ -8,6 +8,8 @@ from django.contrib.auth.views import LoginView # Что бы залогинит
 from django.contrib.auth.forms import AuthenticationForm # Для аутентификации, готовая форма
 from django.shortcuts import redirect # для перенаправления
 from django.contrib.auth import login # что бы авторизоваться автоматически
+from django.core.mail import send_mail, BadHeaderError # BadHeaderError - ошибка
+from django.http import HttpResponse
 from .utils import *
 from .forms import *
 
@@ -137,6 +139,18 @@ class ContactFormView(DataMixin, FormView):
         return dict(list(context.items()) + list(c_def.items()))
 
     def form_valid(self, form):
-        """Переопределяем данный метод"""
+        """Отправка письма на почту"""
         print(form.cleaned_data) # cleaned_data - берет из формы те данные которые у нас приходят {'name': 'Макс', 'email': 'staspv4@gmail.com', 'content': 'Не могу дозвониться'}
+        subject = 'Message' # тема письма
+        body = { # тело письма
+            'name': form.cleaned_data['name'],
+            'email': form.cleaned_data['email'],
+            'content': form.cleaned_data['content']
+        }
+        message = '\n'.join(body.values()) # Само сообщение
+        try:
+            send_mail(subject, message, form.cleaned_data['email'], ['stas.perm000@mail.ru']) # попробуем отправить через данный метод 1 параметр subject - тема письма 2 - message сообщение, 3 from_email - от кого будет отправляться письмо, recipient_list - список, кому будет приходить данное письмо на какие адреса.
+        except BadHeaderError:
+            return HttpResponse('Найден не корректный заголовок')
         return redirect('index')
+        # Отправка на почту это должны быть настройки почтового клиента.

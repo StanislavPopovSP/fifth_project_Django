@@ -130,3 +130,5 @@ MEDIA_URL = 'media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = '/' # Что бы перенаправляло на главную страницу поле того как залогинился пользователь.
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # Иметация реальной почты. Если включен режим разработчика DEBUG=True, то письмо будет отправляться в интерфейс командной строки, а не на почтовый адрес.
