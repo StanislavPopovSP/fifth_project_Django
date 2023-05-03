@@ -1,6 +1,7 @@
 from django.views.generic import ListView  # он за нас сделает большую работу, не надо будет указывать много элементов одновременно.
 from django.views.generic import DetailView  # детальное описание какого то View
 from django.views.generic import CreateView  # создать представление(обработчик)
+from django.views.generic import FormView  # для создания формы обратной связи
 from django.urls import reverse_lazy  # это как redirect в функциях перенаправление, что бы когда заполнили элементы формы, могли перейти на какую-то определенную страницу.
 from django.contrib.auth.mixins import LoginRequiredMixin # Готовый Mixin Django для ограничения доступа к страницам, например для не авторизированных пользователей. Работа авторизацией.
 from django.contrib.auth.views import LoginView # Что бы залогиниться
@@ -122,3 +123,20 @@ class LoginUser(DataMixin, LoginView):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title='Авторизация')
         return dict(list(context.items()) + list(c_def.items()))
+
+
+class ContactFormView(DataMixin, FormView):
+    """Обработка формы обратной связи"""
+    form_class = ContactForm # Будем создавать свою форму
+    template_name = 'blog/contact.html'
+    success_url = reverse_lazy('index')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title='Обратная связь')
+        return dict(list(context.items()) + list(c_def.items()))
+
+    def form_valid(self, form):
+        """Переопределяем данный метод"""
+        print(form.cleaned_data) # cleaned_data - берет из формы те данные которые у нас приходят {'name': 'Макс', 'email': 'staspv4@gmail.com', 'content': 'Не могу дозвониться'}
+        return redirect('index')
