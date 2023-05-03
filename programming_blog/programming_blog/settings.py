@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'blog.apps.BlogConfig',
 
     'captcha', # модуль капча
+    'ckeditor', # для подключения текстового редактора
+    'ckeditor_uploader', # для загрузки файлов, изображений
 ]
 
 MIDDLEWARE = [
@@ -128,6 +130,8 @@ MEDIA_URL = 'media/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CKEDITOR_UPLOAD_PATH = "uploads/" # Путь к загружаемым документам
 
 LOGIN_REDIRECT_URL = '/' # Что бы перенаправляло на главную страницу поле того как залогинился пользователь.
 
